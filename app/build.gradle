@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+//Load API Key information in from property file
+Properties props = new Properties()
+try {
+    props.load(file('twitter.properties').newDataInputStream())
+} catch (Exception ex) {
+    throw new GradleException("Missing twitter.properties")
+}
+
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.twitter.twitterbelltest"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode getVersionNumber()
+        versionName getVersionNumberName()
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            buildConfigField 'String', 'TWITTER_CONSUMER_API_KEY', "\"${props.getProperty("ConsumerApiKey")}\""
+            buildConfigField 'String', 'TWITTER_CONSUMER_API_SECRET', "\"${props.getProperty("ConsumerApiSecret")}\""
+
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField 'String', 'TWITTER_CONSUMER_API_KEY', "\"${props.getProperty("DebugConsumerApiKey")}\""
+            buildConfigField 'String', 'TWITTER_CONSUMER_API_SECRET', "\"${props.getProperty("DebugConsumerApiSecret")}\""
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
+    implementation "androidx.appcompat:appcompat:$ANDROIDX_APPCOMPAT_VERSION"
+    implementation "androidx.core:core-ktx:$ANDROIDX_CORE_VERSION"
+    implementation "com.google.android.material:material:$GOOGLE_MATERIAL_VERSION"
+    implementation "androidx.constraintlayout:constraintlayout:$CONSTRAINT_LAYOUT_VERSION"
+
+    // added library to implement MVVM Design Pattern
+    implementation "androidx.navigation:navigation-fragment:$ANDROIDX_NAVIGATION_VERSION"
+    implementation "androidx.navigation:navigation-ui:$ANDROIDX_NAVIGATION_VERSION"
+    implementation "androidx.lifecycle:lifecycle-extensions:$ANDROIDX_LIFECYCLE_VERSION"
+    implementation "androidx.navigation:navigation-fragment-ktx:$ANDROIDX_NAVIGATION_VERSION"
+    implementation "androidx.navigation:navigation-ui-ktx:$ANDROIDX_NAVIGATION_VERSION"
+
+    // Extra added dependencies will be here
+    implementation "com.twitter.sdk.android:twitter-core:$TWITTER_SDK_CORE_VERSION"
+    implementation "com.squareup.picasso:picasso:$PICASSO_VERSION"
+    implementation "com.google.android.gms:play-services-maps:$GOOGLE_MAPS_VERSION"
+
+
+    // Test Dependencies
+    testImplementation "androidx.test:core:$ANDROIDX_TEST_CORE_VERSION"
+    androidTestImplementation "androidx.test:runner:$ANDROIDX_TEST_RUNNER_VERSION"
+
+}
+
+def getVersionNumber() {
+    return Integer.parseInt("$TWITTER_TEST_VERSION_CODE")
+}
+
+def getVersionNumberName() {
+    return "$TWITTER_TEST_VERSION_NAME"
+}

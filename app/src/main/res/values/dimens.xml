@@ -1,0 +1,43 @@
+<resources>
+    <!--#region Design Guidelines ##-->
+    <!--#region Spacing#-->
+    <dimen name="s05">4dp</dimen>
+    <dimen name="s1">8dp</dimen>
+    <dimen name="s2">16dp</dimen>
+    <dimen name="s3">24dp</dimen>
+    <dimen name="s4">32dp</dimen>
+    <dimen name="s5">40dp</dimen>
+    <dimen name="s6">48dp</dimen>
+    <dimen name="s7">56dp</dimen>
+    <dimen name="s8">64dp</dimen>
+    <dimen name="s9">72dp</dimen>
+    <dimen name="s10">80dp</dimen>
+    <dimen name="s11">88dp</dimen>
+    <dimen name="s12">96dp</dimen>
+    <dimen name="s13">104dp</dimen>
+    <!--#endregion-->
+
+
+    <!--#region Typography Dimens#-->
+
+    <!--#region Font Sizes-->
+    <dimen name="fs_11">11sp</dimen>
+    <dimen name="fs_12">12sp</dimen>
+    <dimen name="fs_14">14sp</dimen>
+    <dimen name="fs_16">16sp</dimen>
+    <dimen name="fs_18">18sp</dimen>
+    <dimen name="fs_24">24sp</dimen>
+    <dimen name="fs_28">28sp</dimen>
+    <dimen name="fs_32">32sp</dimen>
+    <dimen name="fs_44">44sp</dimen>
+    <!--#endregion-->
+
+    <!--#region Line Spacing Extras-->
+    <dimen name="lse_1">1dp</dimen>
+    <dimen name="lse_2">2dp</dimen>
+    <dimen name="lse_4">4dp</dimen>
+    <dimen name="lse_5">5dp</dimen>
+    <!--#endregion-->
+    <!--#endregion-->
+
+</resources>
