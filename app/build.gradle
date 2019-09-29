@@ -62,10 +62,10 @@ dependencies {
 
     // Test Dependencies
     testImplementation "androidx.test:core:$ANDROIDX_TEST_CORE_VERSION"
-    testImplementation "junit:junit:4.12"
+    testImplementation "junit:junit:$JUNIT_VERSION"
     androidTestImplementation "androidx.test:runner:$ANDROIDX_TEST_RUNNER_VERSION"
-    testImplementation "org.mockito:mockito-core:3.0.0"
-    testImplementation "org.robolectric:robolectric:4.3"
+    testImplementation "org.mockito:mockito-core:$MOCKITO_CORE_VERSION"
+    testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
 
 
 }
