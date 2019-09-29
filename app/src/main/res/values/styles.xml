@@ -8,4 +8,43 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MediumTextViewBlackNormal" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="MediumTextViewBlackBold" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MediumTextViewGreyNormal" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="MediumTextViewGreyBold" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SmallTextViewBlackBold" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SmallTextViewBlackNormal" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SmallTextViewGreyBold" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SmallTextViewGreyNormal" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

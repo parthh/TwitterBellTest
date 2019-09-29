@@ -3,7 +3,6 @@ package com.twitter.twitterbelltest.location
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -12,6 +11,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import androidx.core.app.ActivityCompat.startActivityForResult
+import com.twitter.twitterbelltest.MainActivity
 import com.twitter.twitterbelltest.location.model.LocationLastKnownRequest
 import com.twitter.twitterbelltest.location.model.LocationRequestSource
 import com.twitter.twitterbelltest.location.model.LocationUpdateRequest
@@ -31,34 +31,34 @@ class LocationProviderImpl : LocationProvider {
     private var onNoLocationFound: (() -> Unit)? = null
     private var onLocationChange: ((Location) -> Unit)? = null
     private val permissionProvider: PermissionProvider = PermissionProviderImpl
-
+    private var context: Context?=null
     /**
      * get last known location
      *
      */
     @SuppressLint("MissingPermission")
     override fun getLastKnownPosition(
-        activity: Activity,
+        context: Context,
         config: LocationLastKnownRequest,
         onLocationChange: ((Location) -> Unit)?,
         onNoLocationFound: (() -> Unit)?
     ) {
-
+        this.context =  context
         if (locationManager == null) {
-            locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         }
 
         this.onLocationChange = onLocationChange
         this.onNoLocationFound = onNoLocationFound
 
         permissionProvider.checkPermissions(
-            activity = activity,
+            activity = context as MainActivity,
             permissions = arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
             onPermissionResult = { permissionResult ->
-                if (permissionResult.areAllGranted() && isGpsIsEnabled(activity)) {
+                if (permissionResult.areAllGranted() && isGpsIsEnabled(context)) {
                     getLastLocation(config.locationRequestSource)
                 }
             },
@@ -85,25 +85,25 @@ class LocationProviderImpl : LocationProvider {
      *
      */
     override fun startLocationTracker(
-        activity: Activity,
+        context: Context,
         config: LocationUpdateRequest,
         onLocationChange: (Location) -> Unit
     ) {
-
+        this.context =  context
         this.onLocationChange = onLocationChange
 
         if (locationManager == null) {
-            locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         }
 
         permissionProvider.checkPermissions(
-            activity = activity,
+            activity = context as MainActivity,
             permissions = arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
             onPermissionResult = { permissionResult ->
-                if (permissionResult.areAllGranted() && isGpsIsEnabled(activity)) {
+                if (permissionResult.areAllGranted() && isGpsIsEnabled(context)) {
                     requestLocationUpdates(config)
                 }
             },
@@ -126,7 +126,7 @@ class LocationProviderImpl : LocationProvider {
         }
 
         override fun onProviderDisabled(p0: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            isGpsIsEnabled(context!!)
         }
     }
 
@@ -181,11 +181,11 @@ class LocationProviderImpl : LocationProvider {
         }
     }
 
-    private fun isGpsIsEnabled(activity: Activity): Boolean {
+    private fun isGpsIsEnabled(context: Context): Boolean {
         val isGpsEnabled = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (isGpsEnabled == false) {
             val intent = Intent(ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivityForResult(activity, intent, REQUEST_ENABLE_GPS, null)
+            startActivityForResult(context as MainActivity, intent, REQUEST_ENABLE_GPS, null)
             return false
         }
         return true

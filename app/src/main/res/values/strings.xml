@@ -2,6 +2,7 @@
     <string name="app_name">TwitterBellTest</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
+    <string name="textview_radius">Radius : %d KM</string>
 
     <!-- RunTime App Permission Request resources -->
     <string name="permission_request_ok_text">OK</string>

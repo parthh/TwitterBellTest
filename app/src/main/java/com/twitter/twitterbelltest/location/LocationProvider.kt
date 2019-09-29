@@ -1,7 +1,7 @@
 package com.twitter.twitterbelltest.location
 
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.location.Location
 import com.twitter.twitterbelltest.location.model.LocationLastKnownRequest
@@ -19,7 +19,7 @@ interface LocationProvider {
      * get last known location
      *
      */
-    fun getLastKnownPosition(activity: Activity, config: LocationLastKnownRequest, onLocationChange: ((Location) -> Unit)?, onNoLocationFound: (() -> Unit)?)
+    fun getLastKnownPosition(context: Context, config: LocationLastKnownRequest, onLocationChange: ((Location) -> Unit)?, onNoLocationFound: (() -> Unit)?)
 
 
     /**
@@ -33,7 +33,7 @@ interface LocationProvider {
      * start location change tracker
      *
      */
-    fun startLocationTracker(activity: Activity, config: LocationUpdateRequest, onLocationChange: (Location) -> Unit)
+    fun startLocationTracker(context: Context, config: LocationUpdateRequest, onLocationChange: (Location) -> Unit)
 
 
     /**
