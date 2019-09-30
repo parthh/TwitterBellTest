@@ -10,6 +10,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
+import android.util.Log
 import androidx.core.app.ActivityCompat.startActivityForResult
 import com.twitter.twitterbelltest.MainActivity
 import com.twitter.twitterbelltest.location.model.LocationLastKnownRequest
@@ -23,6 +24,7 @@ import com.twitter.twitterbelltest.permission.PermissionProviderImpl
  * <p>LocationProviderImpl is based on LocationProvider and contains all logic for handling location changes and last known location</p>
  */
 class LocationProviderImpl : LocationProvider {
+
 
     private val REQUEST_PERMISSION_FINE_LOCATION_FOR_LAST_POSITION = 123
     private val REQUEST_PERMISSION_FINE_LOCATION_FOR_LOCATION_TRACKER = 345
@@ -118,11 +120,11 @@ class LocationProviderImpl : LocationProvider {
         }
 
         override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            Log.d(TAG, "Gps status change$p1")
         }
 
         override fun onProviderEnabled(p0: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            Log.d(TAG, "Gps provider enables $p0")
         }
 
         override fun onProviderDisabled(p0: String?) {
@@ -264,5 +266,9 @@ class LocationProviderImpl : LocationProvider {
             return true
         }
         return false
+    }
+
+    companion object {
+        var TAG = this.javaClass.simpleName
     }
 }
