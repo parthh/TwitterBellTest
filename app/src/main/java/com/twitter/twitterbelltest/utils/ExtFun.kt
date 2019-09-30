@@ -2,11 +2,15 @@ package com.twitter.twitterbelltest.utils
 
 import android.location.Location
 import android.text.format.DateUtils
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.squareup.picasso.Picasso
 import com.twitter.sdk.android.core.models.Coordinates
 import com.twitter.sdk.android.core.models.Tweet
+import com.twitter.twitterbelltest.R
 import com.twitter.twitterbelltest.TwitterTestApp
 import com.twitter.twitterbelltest.model.TweetItem
 import com.twitter.twitterbelltest.utils.Const.DEFAULT_LAT
@@ -114,9 +118,70 @@ fun getZoomLevel(circle: Circle?): Float {
     return zoomLevel + 0.4F
 }
 
-fun Marker.parseTweetPinSnippet(): List<String> = this.snippet.split(",")
+fun Marker.parseTweetPinSnippet(): List<String> = this.snippet.split("^")
 
 fun Tweet.getStringTweetItemModel(): String = TweetItem(
     photo = this.user.profileImageUrlHttps,
     tweetId = this.id, tweetText = this.text, tweetTime = this.createdAt
 ).toString()
+
+fun ImageView.loadUrl(url: String?, @DrawableRes placeholder: Int = R.drawable.no_image_found) {
+    Picasso.get().load(url).placeholder(placeholder).fit().centerCrop().into(this)
+}
+
+fun Tweet.hasSingleImage(): Boolean {
+    extendedEntities?.media?.size?.let { return it == 1 && extendedEntities.media[0].type == "photo" }
+    return false
+}
+
+fun Tweet.hasSingleVideo(): Boolean {
+    extendedEntities?.media?.size?.let { return it == 1 && extendedEntities.media[0].type != "photo" }
+    return false
+}
+
+fun Tweet.hasMultipleMedia(): Boolean {
+    extendedEntities?.media?.size?.let { return it > 1 }.run { return false }
+}
+
+fun Tweet.getImageUrl(): String {
+    return if (hasSingleImage() || hasMultipleMedia())
+        entities.media[0]?.mediaUrl ?: ""
+    else
+        ""
+}
+
+fun Tweet.getVideoCoverUrl(): String {
+    return if (hasSingleVideo() || hasMultipleMedia())
+        entities.media[0]?.mediaUrlHttps ?: (entities.media[0]?.mediaUrl ?: "")
+    else
+        ""
+}
+
+fun Tweet.getVideoUrlType(): Pair<String, String> {
+    return if (hasSingleVideo() || hasMultipleMedia()) {
+        val variant = extendedEntities.media[0].videoInfo.variants
+        Pair(variant[0].url, variant[0].contentType)
+    } else
+        Pair("", "")
+}
+
+fun Tweet.getTweetItemFromTweet(): TweetItem {
+    val currentTweet: Tweet = this
+    val tweetItem = TweetItem(
+        photo = currentTweet.user.profileImageUrl,
+        tweetTime = currentTweet.createdAt,
+        tweetText = currentTweet.text,
+        tweetId = currentTweet.id,
+        reTweetCount = currentTweet.retweetCount,
+        tweetFavoriteCount = currentTweet.favoriteCount,
+        tweetFavorited = currentTweet.favorited,
+        tweetRetweeted = currentTweet.retweeted,
+        userName = currentTweet.user.name,
+        userScreenName = currentTweet.user.screenName,
+        tweetPhoto = currentTweet.getImageUrl(),
+        tweetVideoCoverUrl = currentTweet.getVideoCoverUrl(),
+        tweetVideoUrl = currentTweet.getVideoUrlType()
+    )
+
+    return tweetItem
+}

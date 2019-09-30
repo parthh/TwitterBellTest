@@ -1,8 +1,6 @@
 package com.twitter.twitterbelltest.ui.home
 
 import android.location.Location
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
@@ -21,11 +19,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class HomeViewModel : ViewModel() {
 
+    private val timeToRefreshMap: Long = 30 // 30 sec
+    var scheduledExecutorService = Executors.newScheduledThreadPool(1)
     private val tweets: MutableLiveData<MutableList<Tweet>> = MutableLiveData()
     fun getTweetsObservable(): LiveData<MutableList<Tweet>> = tweets
 
@@ -43,7 +43,9 @@ class HomeViewModel : ViewModel() {
             postUpdate(radius, tweetList = tweetList as List<Tweet>)
             Log.d("tweet", "cached tweet returned")
         } else {
-            loadTweets(location, radius)
+            scheduledExecutorService.scheduleWithFixedDelay({
+                loadTweets(location, radius)
+            },0, timeToRefreshMap, TimeUnit.SECONDS)
         }
     }
 

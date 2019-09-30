@@ -2,7 +2,11 @@
     <string name="app_name">TwitterBellTest</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
+    <string name="title_tweet_detail">Tweet Detail</string>
+    <string name="title_login">Login</string>
+    <string name="title_image">Image</string>
     <string name="textview_radius">Radius : %d KM</string>
+    <string name="authentication_failed">Authentication Failed</string>
 
     <!-- RunTime App Permission Request resources -->
     <string name="permission_request_ok_text">OK</string>

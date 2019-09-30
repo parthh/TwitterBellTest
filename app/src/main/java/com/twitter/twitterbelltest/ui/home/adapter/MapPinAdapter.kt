@@ -1,6 +1,7 @@
 package com.twitter.twitterbelltest.ui.home.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.squareup.picasso.Picasso
 import com.twitter.twitterbelltest.R
+import com.twitter.twitterbelltest.ui.tweet.TweetDetailActivity
 import com.twitter.twitterbelltest.utils.formatTime
 import com.twitter.twitterbelltest.utils.parseTweetPinSnippet
 
@@ -23,7 +25,7 @@ class MapPinAdapter(private val context: Context) : GoogleMap.InfoWindowAdapter,
     override fun onInfoWindowClick(p0: Marker) {
         val text = p0.parseTweetPinSnippet()
         val id = text[INDEX_TWEET_ID].toLong()
-
+        startTwitterDetailActivity(id)
     }
 
     override fun getInfoContents(marker: Marker): View {
@@ -46,4 +48,10 @@ class MapPinAdapter(private val context: Context) : GoogleMap.InfoWindowAdapter,
 
 
     override fun getInfoWindow(p0: Marker?) = null
+
+    fun startTwitterDetailActivity(id: Long){
+        val intent =  Intent(context, TweetDetailActivity::class.java)
+        intent.putExtra("tweetId",id)
+        context.startActivity(intent)
+    }
 }

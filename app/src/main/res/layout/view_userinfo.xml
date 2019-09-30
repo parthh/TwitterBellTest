@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="tweetItem"
+            type="com.twitter.twitterbelltest.model.TweetItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/s2"
+        android:paddingRight="@dimen/s2">
+
+        <ImageView
+            android:id="@+id/userProfilePicImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{TextUtils.isEmpty(tweetItem.userName)? View.GONE : View.VISIBLE}"
+            android:text="@{tweetItem.userName}"
+            style="@style/MediumTextViewGreyBold"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/s1"
+            android:layout_marginEnd="@dimen/s1"
+            tools:text="Donald Trump" />
+
+        <TextView
+            android:id="@+id/userScreenNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="@{TextUtils.isEmpty(tweetItem.userScreenName)? View.GONE : View.VISIBLE}"
+            android:text="@{`/@`+tweetItem.userScreenName}"
+            style="@style/MediumTextViewGreyNormal"
+            tools:text="/@test" />
+
+    </LinearLayout>
+</layout>

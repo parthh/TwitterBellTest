@@ -46,6 +46,27 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.tweet.TweetDetailActivity"
+            android:label="@string/title_tweet_detail"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_login">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.image.ImageActivity"
+            android:label="@string/title_image"/>
+
     </application>
 
 </manifest>

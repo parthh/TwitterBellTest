@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="tweetItemAction"
+            type="com.twitter.twitterbelltest.model.TweetItem" />
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <ImageButton
+        android:id="@+id/favouriteImageButton"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_margin="3dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_favorite_border_green_a700_24dp" />
+
+    <TextView
+        android:id="@+id/favouritesStatsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{``+tweetItemAction.tweetFavoriteCount}"
+        style="@style/SmallTextViewGreyBold"
+        android:layout_gravity="center_vertical"
+        tools:text="200" />
+
+    <ImageButton
+        android:id="@+id/retweetImageButton"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_margin="3dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_compare_arrows_green_a700_24dp" />
+
+    <TextView
+        android:id="@+id/retweetsStatsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{``+tweetItemAction.reTweetCount}"
+        style="@style/SmallTextViewGreyBold"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        tools:text="22" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@{tweetItemAction.formattedTime}"
+        style="@style/SmallTextViewGreyBold"
+        android:ellipsize="end"
+        tools:text="12:00PM"
+        android:maxLines="1" />
+</LinearLayout>
+</layout>
