@@ -2,8 +2,12 @@ package com.twitter.twitterbelltest.permission.model
 
 import android.content.pm.PackageManager
 
+/**
+ * PermissionResult class is use to verify permission is granted or denied
+ * @param result result from the run time permission
+ * @param requestCode requestCode that is attached to permission request
+ */
 data class PermissionResult(val result: Map<String, Int>, val requestCode: Int) {
-
 
     /**
      * check if all permissions are granted
@@ -19,7 +23,6 @@ data class PermissionResult(val result: Map<String, Int>, val requestCode: Int) 
         return allGranted
     }
 
-
     /**
      * check if at least one permission is granted
      *
@@ -34,7 +37,6 @@ data class PermissionResult(val result: Map<String, Int>, val requestCode: Int) 
         return oneGranted
     }
 
-
     /**
      * get all granted permissions
      *
@@ -43,7 +45,6 @@ data class PermissionResult(val result: Map<String, Int>, val requestCode: Int) 
         return result.filter { it.value == PackageManager.PERMISSION_GRANTED }.map { it.key }
     }
 
-
     /**
      * get all denied permissions
      *
@@ -51,5 +52,4 @@ data class PermissionResult(val result: Map<String, Int>, val requestCode: Int) 
     fun getDenied(): List<String> {
         return result.filter { it.value == PackageManager.PERMISSION_DENIED }.map { it.key }
     }
-
 }

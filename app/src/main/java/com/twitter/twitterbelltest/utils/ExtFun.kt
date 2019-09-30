@@ -33,12 +33,20 @@ private val DATE_TIME: SimpleDateFormat =
     SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH)
 
 
+/**
+ * Set radius into sharedpreference
+ * @param value radius in KM
+ */
 fun setRadius(value: Int = DEFAULT_RADIUS) {
     runBlocking {
         TwitterTestApp.sharedPreferenceCache.withInt().set(PREF_RADIUS_KEY, value = value).await()
     }
 }
 
+/**
+ * get radius from sharedpreference
+ * @return Int radius in KM
+ */
 fun getRadius(): Int {
     return runBlocking {
         TwitterTestApp.sharedPreferenceCache.withInt().get(PREF_RADIUS_KEY).await()
@@ -46,12 +54,20 @@ fun getRadius(): Int {
     }
 }
 
+/**
+ * set current location into lrucache
+ * @param location Location object from googles
+ */
 fun setLocation(location: Location) {
     runBlocking {
         TwitterTestApp.lruCacheWrapper.set(PREF_LATLNG_KEY, value = location).await()
     }
 }
 
+/**
+ * get stored location from lrucache else defaulted to montreal location
+ * @return Location object from googles
+ */
 fun getLocation(): Location {
     return runBlocking {
         var loc = TwitterTestApp.lruCacheWrapper.get(PREF_LATLNG_KEY).await()
@@ -67,20 +83,37 @@ fun getLocation(): Location {
     }
 }
 
+
+/**
+ * get LatLng object from the lat,lng string
+ * @return LatLng object from googles
+ */
 fun String.getLatLng(): LatLng {
     if (this.isNullOrEmpty()) return LatLng(DEFAULT_LAT, DEFAULT_LNG)
     val latlngArray = this.split(",")
     return LatLng(latlngArray[0].toDouble(), latlngArray[1].toDouble())
 }
 
+/**
+ * get Latlng object from the Location object
+ * @return LatLng object from googles
+ */
 fun Location.getLatLng(): LatLng {
     return LatLng(this.latitude, this.longitude) ?: LatLng(45.4943571, -73.5802513)
 }
 
+/**
+ * get string lat,lng formmated from the LatLng object
+ * @return String of format lat,lng
+ */
 fun LatLng.getStringLatLng(): String {
     return "${this.latitude}:${this.longitude}" ?: "45.4943571:-73.5802513"
 }
 
+/**
+ * get LatLng from Tweet object
+ * @return LatLng
+ */
 fun Tweet.getTweetLatLng(): LatLng? {
     return (this.coordinates?.let { it2 -> LatLng(it2.latitude, it2.longitude) }
         ?: run {
@@ -94,6 +127,7 @@ fun Tweet.getTweetLatLng(): LatLng? {
         })
 }
 
+
 fun String.timeToLong(): Long {
     if (this == null) return INVALID_DATE
 
@@ -105,6 +139,10 @@ fun String.timeToLong(): Long {
 
 }
 
+/**
+ * Format time from tweet in to relative timespan
+ * @return CharSequence
+ */
 fun String.formatTime(): CharSequence? {
     val createdAt = this.timeToLong()
     if (createdAt != INVALID_DATE) {
@@ -113,6 +151,10 @@ fun String.formatTime(): CharSequence? {
     return null
 }
 
+/**
+ * ZoomLeve based on the current set radius on map for circle
+ * @return Float
+ */
 fun getZoomLevel(circle: Circle?): Float {
     var zoomLevel = 11
     val radiusCircle = circle?.radius ?: (getRadius().toDouble() * 1000)
@@ -122,31 +164,54 @@ fun getZoomLevel(circle: Circle?): Float {
     return zoomLevel + 0.4F
 }
 
+/**
+ * Parse snippet attached to marker on map into relative list of string
+ * @return List<String>
+ */
 fun Marker.parseTweetPinSnippet(): List<String> = this.snippet.split("^")
 
+/**
+ * Encode the required fields from Tweet object into snippet to attached with marker pin on map
+ * @return String
+ */
 fun Tweet.getStringTweetItemModel(): String = TweetItem(
     photo = this.user.profileImageUrlHttps,
     tweetId = this.id, tweetText = this.text, tweetTime = this.createdAt
-).toString()
+).provideMapMarkerSnippet
 
+/**
+ * Load URL into provide imageview
+ */
 fun ImageView.loadUrl(url: String?, @DrawableRes placeholder: Int = R.drawable.no_image_found) {
     Picasso.get().load(url).placeholder(placeholder).fit().centerCrop().into(this)
 }
 
+/**
+ * Check Tweet has at least single image url
+ */
 fun Tweet.hasSingleImage(): Boolean {
     extendedEntities?.media?.size?.let { return it == 1 && extendedEntities.media[0].type == "photo" }
     return false
 }
 
+/**
+ * Check Tweet has at least single video url
+ */
 fun Tweet.hasSingleVideo(): Boolean {
     extendedEntities?.media?.size?.let { return it == 1 && extendedEntities.media[0].type != "photo" }
     return false
 }
 
+/**
+ * Check Tweet has at multiple media
+ */
 fun Tweet.hasMultipleMedia(): Boolean {
     extendedEntities?.media?.size?.let { return it > 1 }.run { return false }
 }
 
+/**
+ * get Image URL from Tweet Object
+ */
 fun Tweet.getImageUrl(): String {
     return try {
         if (hasSingleImage() || hasMultipleMedia())
@@ -158,6 +223,9 @@ fun Tweet.getImageUrl(): String {
     }
 }
 
+/**
+ * get Video cover URL from Tweet Object
+ */
 fun Tweet.getVideoCoverUrl(): String {
     return try {
         if (hasSingleVideo() || hasMultipleMedia())
@@ -169,6 +237,9 @@ fun Tweet.getVideoCoverUrl(): String {
     }
 }
 
+/**
+ * get playable Video URL from Tweet Object
+ */
 fun Tweet.getVideoUrlType(): Pair<String, String> {
     return try {
         if (hasSingleVideo() || hasMultipleMedia()) {
@@ -181,9 +252,13 @@ fun Tweet.getVideoUrlType(): Pair<String, String> {
     }
 }
 
+/**
+ * Transform the Tweet object into relevant required TweetItem object
+ */
 fun Tweet.getTweetItemFromTweet(): TweetItem {
     val currentTweet: Tweet = this
-    val tweetItem = TweetItem(
+
+    return TweetItem(
         photo = currentTweet.user.profileImageUrl,
         tweetTime = currentTweet.createdAt,
         tweetText = currentTweet.text,
@@ -198,10 +273,11 @@ fun Tweet.getTweetItemFromTweet(): TweetItem {
         tweetVideoCoverUrl = currentTweet.getVideoCoverUrl(),
         tweetVideoUrl = currentTweet.getVideoUrlType()
     )
-
-    return tweetItem
 }
 
+/**
+ * Check weather location permission is granted for the app or not
+ */
 fun isLocationGranted(context: Context) =
     ContextCompat.checkSelfPermission(
         context,

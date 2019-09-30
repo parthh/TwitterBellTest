@@ -21,7 +21,6 @@ abstract class BaseTweetActivity : AppCompatActivity(), TwitterActionListener {
      */
     abstract fun postInteractionSuccessful( tweetAfter: Tweet)
 
-    // redundant code
     private fun enqueue(call: Call<Tweet>) {
         call.enqueue(object : Callback<Tweet>() {
             override fun success(result: Result<Tweet>?) {

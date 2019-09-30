@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -50,23 +49,21 @@ class SearchFragment : BaseTweetFragment() {
 
         searchTweets.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if(query.isNullOrEmpty()){
-                    searchViewModel.initialized()
-                } else {
-                    searchViewModel.fetchTweetsByQuery(
-                        query = query,
-                        location = getLocation(),
-                        radius = getRadius()
-                    )
-                    activity?.actionBar?.title = query
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText.isNullOrEmpty()){
+                    searchViewModel.initialized()
+                } else {
+                    searchViewModel.fetchTweetsByQuery(
+                        query = newText,
+                        location = getLocation(),
+                        radius = getRadius()
+                    )
+                }
+                return true
+            }
         })
 
         searchViewModel.getTweetsObservable().observe(this, Observer {
@@ -83,13 +80,13 @@ class SearchFragment : BaseTweetFragment() {
 
     }
 
-    fun fillTweets(tweetItems: List<TweetItem>) {
+    private fun fillTweets(tweetItems: List<TweetItem>) {
         adapter.setList(tweetItems.toMutableList())
         adapter.notifyDataSetChanged()
     }
 
 
-    fun startTwitterDetailActivity(id: Long) {
+    private fun startTwitterDetailActivity(id: Long) {
         val intent = Intent(context, TweetDetailActivity::class.java)
         intent.putExtra(TWEET_ID, id)
         context?.startActivity(intent)

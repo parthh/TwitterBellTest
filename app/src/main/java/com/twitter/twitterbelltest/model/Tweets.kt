@@ -2,6 +2,9 @@ package com.twitter.twitterbelltest.model
 
 import com.twitter.twitterbelltest.utils.formatTime
 
+/**
+ * TweetItem model based from Tweet object from tweeter SDK
+ */
 open class TweetItem(
     val photo: String? = null,
     val tweetTime: String,
@@ -15,11 +18,13 @@ open class TweetItem(
     val userScreenName: String = "",
     val tweetPhoto: String = "",
     val tweetVideoCoverUrl: String = "",
-    val tweetVideoUrl: Pair<String, String> = Pair("","")
+    val tweetVideoUrl: Pair<String, String> = Pair("", "")
 ) {
-    override fun toString(): String {
-        return "$photo^$tweetTime^$tweetText^$tweetId"
-    }
+    /**
+     * provideMapMarkerSnippet function provide the encoded snippet for marker on the map
+     */
+    val provideMapMarkerSnippet: String
+        get() = "$photo^$tweetTime^$tweetText^$tweetId"
 
     val formattedTime: String
         get() = tweetTime.formatTime().toString()

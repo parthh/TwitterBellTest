@@ -37,6 +37,4 @@ class TweetDetailViewModel : ViewModel() {
     fun postData(tweet:TweetItem?){
         this.tweet.value = tweet
     }
-
-
 }

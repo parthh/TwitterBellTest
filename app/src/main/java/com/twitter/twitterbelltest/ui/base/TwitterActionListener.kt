@@ -1,7 +1,7 @@
 package com.twitter.twitterbelltest.ui.base
 
 /**
- * Tweet Actions
+ * Tweet action interface
  */
 interface TwitterActionListener {
 

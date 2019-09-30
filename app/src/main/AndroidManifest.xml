@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.twitter.twitterbelltest">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
     <application
         android:name=".TwitterTestApp"
@@ -31,7 +31,7 @@
        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+            android:value="@string/google_maps_key" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -51,25 +51,24 @@
             android:name=".ui.tweet.TweetDetailActivity"
             android:label="@string/title_tweet_detail"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_login">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".ui.image.ImageActivity"
-            android:label="@string/title_image"/>
+            android:label="@string/title_image" />
         <activity
             android:name=".ui.video.VideoActivity"
-            android:label="@string/title_image"/>
+            android:label="@string/title_video" />
     </application>
 
 </manifest>

@@ -12,30 +12,42 @@ import com.twitter.twitterbelltest.utils.loadUrl
 import kotlinx.android.synthetic.main.item_tweet_action.view.*
 import kotlinx.android.synthetic.main.view_userinfo.view.*
 
+/**
+ * SearchAdapter is use for feeding the tweets when user start searching the hashtag or keywords
+ */
 class SearchAdapter(
     val twitterActionListener: TwitterActionListener,
     val listener: ((TweetItem) -> Unit)? = null
 ) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     var tweetList = mutableListOf<TweetItem>()
 
+    /**
+     * Set the initial list of tweets
+     */
     fun setList(data: MutableList<TweetItem>) {
         tweetList.clear()
         tweetList.addAll(data)
         notifyDataSetChanged()
     }
 
+    /**
+     * updateItem is useful when any of the list item get changed due to like or retweet that's get notified
+     */
     fun updateItem(tweetItem: TweetItem) {
         val item = tweetList.find { tweet -> tweet.tweetId == tweetItem.tweetId }
-        tweetList[tweetList.indexOf(item)] = tweetItem
-        notifyItemChanged(tweetList.indexOf(item))
+        item?.let {
+            tweetList.indexOf(item).let {
+                notifyItemChanged(it, tweetItem)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-
         val callBinding = DataBindingUtil
             .inflate<ListitemSearchBinding>(
                 LayoutInflater.from(parent.context), R.layout.listitem_search,
-                parent, false)
+                parent, false
+            )
         return SearchViewHolder(callBinding)
     }
 
@@ -45,7 +57,8 @@ class SearchAdapter(
         holder.bind(tweetList[position])
     }
 
-    inner class SearchViewHolder(val binding: ListitemSearchBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class SearchViewHolder(val binding: ListitemSearchBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(tweetItem: TweetItem) = with(itemView) {
             binding.tweet = tweetItem
 

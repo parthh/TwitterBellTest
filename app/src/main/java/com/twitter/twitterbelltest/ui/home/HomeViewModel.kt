@@ -20,13 +20,19 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 class HomeViewModel : ViewModel() {
 
     private val timeToRefreshMap: Long = 30 // 30 sec
-    var scheduledExecutorService = Executors.newScheduledThreadPool(1)
+
+    // Executor service to fetch the tweets after each 30 seconds
+    private val scheduledExecutorService: ScheduledExecutorService =
+        Executors.newScheduledThreadPool(1)
+
     private val tweets: MutableLiveData<MutableList<Tweet>> = MutableLiveData()
+
     fun getTweetsObservable(): LiveData<MutableList<Tweet>> = tweets
 
     fun initialized(location: Location = getLocation(), radius: Int = getRadius()) {
@@ -34,7 +40,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun fetchGeoTweets(location: Location, radius: Int) {
-        var tweetList: Any?=null
+        var tweetList: Any? = null
         runBlocking {
             tweetList =
                 TwitterTestApp.lruCacheWrapper.get(CACHE_TWEETS(radius)).await()
@@ -45,14 +51,13 @@ class HomeViewModel : ViewModel() {
         } else {
             scheduledExecutorService.scheduleWithFixedDelay({
                 loadTweets(location, radius)
-            },0, timeToRefreshMap, TimeUnit.SECONDS)
+            }, 0, timeToRefreshMap, TimeUnit.SECONDS)
         }
     }
 
     @WorkerThread
     private fun loadTweets(location: Location, radius: Int) {
         Log.d("tweets", "loadTweets")
-        // load tweets if location is null take montreal
         val geocode =
             Geocode(
                 location.latitude, location.longitude,
@@ -78,12 +83,22 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    /**
+     * post fetched tweets to view by updating livedata observer
+     * @param radius radius for which this tweets was being fetched
+     * @param tweetList list of tweets
+     */
     private fun postUpdate(radius: Int, tweetList: List<Tweet>?) {
         setCacheTweet(radius, tweetList)
         this.tweets.postValue(tweetList?.toMutableList())
     }
 
-    fun setCacheTweet(radius: Int, tweetList: List<Tweet>?){
+    /**
+     * update the lrucache in memory
+     * @param radius radius for which this tweets was being fetched
+     * @param tweetList list of tweets
+     */
+    private fun setCacheTweet(radius: Int, tweetList: List<Tweet>?) {
         runBlocking {
             TwitterTestApp.lruCacheWrapper.remove(CACHE_TWEETS(radius)).await()
             TwitterTestApp.lruCacheWrapper.set(CACHE_TWEETS(radius), tweetList as Any).await()

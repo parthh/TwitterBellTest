@@ -35,8 +35,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        // Pass the activity result to the login button.
         twitterLoginButton.onActivityResult(requestCode, resultCode, data)
     }
 }

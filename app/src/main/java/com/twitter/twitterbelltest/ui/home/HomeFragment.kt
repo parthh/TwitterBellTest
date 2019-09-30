@@ -16,8 +16,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import com.twitter.twitterbelltest.location.LocationProvider
-import com.twitter.twitterbelltest.location.LocationProviderImpl
 import com.twitter.twitterbelltest.ui.home.adapter.MapPinAdapter
 import com.twitter.twitterbelltest.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -57,7 +55,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             ?.replace(com.twitter.twitterbelltest.R.id.map, mapFragment)?.commit()
         mapFragment?.getMapAsync(this)
         radius.text = getString(com.twitter.twitterbelltest.R.string.textview_radius, getRadius())
-        seekBar.progress = getRadius()*1000
+        seekBar.progress = getRadius()*1000 // initial seekbar set to 5KM
     }
 
     private fun showTweetsOnMap() {

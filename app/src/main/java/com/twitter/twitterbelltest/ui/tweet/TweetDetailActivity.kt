@@ -2,14 +2,10 @@ package com.twitter.twitterbelltest.ui.tweet
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.twitterbelltest.R
 import com.twitter.twitterbelltest.databinding.ActivityTweetLayoutBinding
 import com.twitter.twitterbelltest.model.TweetItem
 import com.twitter.twitterbelltest.ui.base.BaseTweetActivity
@@ -19,14 +15,14 @@ import kotlinx.android.synthetic.main.activity_tweet_layout.*
 import kotlinx.android.synthetic.main.item_tweet_action.*
 import kotlinx.android.synthetic.main.video_cover.*
 import kotlinx.android.synthetic.main.view_userinfo.*
-import java.lang.Exception
 
 
 class TweetDetailActivity : BaseTweetActivity() {
 
 
-    lateinit var tweetDetailViewModel: TweetDetailViewModel
+    private lateinit var tweetDetailViewModel: TweetDetailViewModel
     private lateinit var activityBinding: ActivityTweetLayoutBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityBinding = DataBindingUtil.setContentView(this, com.twitter.twitterbelltest.R.layout.activity_tweet_layout)
@@ -44,7 +40,7 @@ class TweetDetailActivity : BaseTweetActivity() {
         }
     }
 
-    fun initUi(tweetItem: TweetItem) {
+    private fun initUi(tweetItem: TweetItem) {
         activityBinding.tweet = tweetItem
         userProfilePicImageView.loadUrl(tweetItem.photo)
         if (tweetItem.tweetFavorited)

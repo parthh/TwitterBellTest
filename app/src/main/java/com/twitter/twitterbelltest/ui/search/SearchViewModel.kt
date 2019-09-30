@@ -1,7 +1,6 @@
 package com.twitter.twitterbelltest.ui.search
 
 import android.location.Location
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +11,7 @@ import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.services.params.Geocode
 import com.twitter.twitterbelltest.TwitterTestApp
 import com.twitter.twitterbelltest.model.TweetItem
-import com.twitter.twitterbelltest.utils.Const
+import com.twitter.twitterbelltest.utils.Const.CACHE_SEARCH_RESULT
 import com.twitter.twitterbelltest.utils.getLocation
 import com.twitter.twitterbelltest.utils.getRadius
 import com.twitter.twitterbelltest.utils.getTweetItemFromTweet
@@ -28,12 +27,15 @@ class SearchViewModel : ViewModel() {
 
     fun getTweetsObservable(): LiveData<List<TweetItem>?> = tweets
 
-    fun initialized(query: String="#food", location: Location = getLocation(), radius: Int = getRadius()) {
+    fun initialized(
+        query: String = "#food",
+        location: Location = getLocation(),
+        radius: Int = getRadius()
+    ) {
         fetchTweetsByQuery(query, location, radius)
     }
 
     fun fetchTweetsByQuery(query: String, location: Location, radius: Int) {
-        // load tweets if location is null take montreal
         val geocode =
             Geocode(
                 location.latitude, location.longitude,
@@ -43,19 +45,18 @@ class SearchViewModel : ViewModel() {
         var tweetList: Any? = null
         runBlocking {
             tweetList =
-                TwitterTestApp.lruCacheWrapper.get(Const.CACHE_SEARCH_RESULT(query, geocode))
+                TwitterTestApp.lruCacheWrapper.get(CACHE_SEARCH_RESULT(query, geocode))
                     .await()
         }
         if (tweetList != null) {
             postUpdate(query, geocode, tweetList as List<Tweet>)
         } else {
-            loadTweets(query, location, radius, geocode)
+            loadTweets(query, geocode)
         }
     }
 
     @WorkerThread
-    private fun loadTweets(query: String, location: Location, radius: Int, geocode: Geocode) {
-        Log.d("tweets", "loadTweets")
+    private fun loadTweets(query: String, geocode: Geocode) {
         try {
             TwitterCore.getInstance().apiClient.searchService.tweets(
                 query, geocode, null,
@@ -76,20 +77,32 @@ class SearchViewModel : ViewModel() {
 
     }
 
+    /**
+     * post fetched tweets to view by updating livedata observer
+     * @param query query param that is get searched
+     * @param geocode geocode that is being used
+     * @param tweetList list of tweets
+     */
     private fun postUpdate(query: String, geocode: Geocode, tweetList: List<Tweet>?) {
         val tweetListItems = mutableListOf<TweetItem>()
         tweetList?.let {
             it.forEach { tweet: Tweet -> tweetListItems.add(tweet.getTweetItemFromTweet()) }
         }
-        setCacheSearchTweet(query, geocode, tweetListItems)
+        setCacheSearchTweet(query, geocode, tweetList)
         this.tweets.postValue(tweetListItems.toMutableList())
     }
 
-    fun setCacheSearchTweet(query: String, geocode: Geocode, tweetList: List<TweetItem>?) {
+    /**
+     * update the lrucache in memory
+     * @param query query param that is get searched
+     * @param geocode geocode that is being used
+     * @param tweetList tweetList after api result
+     */
+    private fun setCacheSearchTweet(query: String, geocode: Geocode, tweetList: List<Tweet>?) {
         runBlocking {
-            TwitterTestApp.lruCacheWrapper.remove(Const.CACHE_SEARCH_RESULT(query, geocode)).await()
+            TwitterTestApp.lruCacheWrapper.remove(CACHE_SEARCH_RESULT(query, geocode)).await()
             TwitterTestApp.lruCacheWrapper.set(
-                Const.CACHE_SEARCH_RESULT(query, geocode),
+                CACHE_SEARCH_RESULT(query, geocode),
                 tweetList as Any
             ).await()
         }

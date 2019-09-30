@@ -15,7 +15,12 @@ import com.twitter.twitterbelltest.ui.tweet.TweetDetailActivity.Companion.TWEET_
 import com.twitter.twitterbelltest.utils.formatTime
 import com.twitter.twitterbelltest.utils.parseTweetPinSnippet
 
-class MapPinAdapter(private val context: Context) : GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
+/**
+ * MapPinAdapter class is adapter for markers on map
+ * @param context Context of application
+ */
+class MapPinAdapter(private val context: Context) : GoogleMap.InfoWindowAdapter,
+    GoogleMap.OnInfoWindowClickListener {
     companion object {
         const val INDEX_PHOTO_URL = 0
         const val INDEX_TIME = 1
@@ -47,12 +52,11 @@ class MapPinAdapter(private val context: Context) : GoogleMap.InfoWindowAdapter,
         return v
     }
 
-
     override fun getInfoWindow(p0: Marker?) = null
 
-    fun startTwitterDetailActivity(id: Long){
-        val intent =  Intent(context, TweetDetailActivity::class.java)
-        intent.putExtra(TWEET_ID,id)
+    fun startTwitterDetailActivity(id: Long) {
+        val intent = Intent(context, TweetDetailActivity::class.java)
+        intent.putExtra(TWEET_ID, id)
         context.startActivity(intent)
     }
 }
