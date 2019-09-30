@@ -56,12 +56,6 @@ class SearchViewModel : ViewModel() {
     @WorkerThread
     private fun loadTweets(query: String, location: Location, radius: Int, geocode: Geocode) {
         Log.d("tweets", "loadTweets")
-        // load tweets if location is null take montreal
-        val geocode =
-            Geocode(
-                location.latitude, location.longitude,
-                radius, Geocode.Distance.KILOMETERS
-            )
         try {
             TwitterCore.getInstance().apiClient.searchService.tweets(
                 query, geocode, null,

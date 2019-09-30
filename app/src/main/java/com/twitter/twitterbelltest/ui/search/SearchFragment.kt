@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.twitterbelltest.R
 import com.twitter.twitterbelltest.model.TweetItem
 import com.twitter.twitterbelltest.ui.base.BaseTweetFragment
 import com.twitter.twitterbelltest.ui.search.adapter.SearchAdapter
@@ -20,6 +20,7 @@ import com.twitter.twitterbelltest.utils.getLocation
 import com.twitter.twitterbelltest.utils.getRadius
 import com.twitter.twitterbelltest.utils.getTweetItemFromTweet
 import kotlinx.android.synthetic.main.fragment_search.*
+
 
 class SearchFragment : BaseTweetFragment() {
     private lateinit var searchViewModel: SearchViewModel
@@ -31,7 +32,7 @@ class SearchFragment : BaseTweetFragment() {
     ): View? {
         searchViewModel =
             ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_search, container, false)
+        val root = inflater.inflate(com.twitter.twitterbelltest.R.layout.fragment_search, container, false)
         return root
     }
 
@@ -66,8 +67,8 @@ class SearchFragment : BaseTweetFragment() {
                 return false
             }
 
-
         })
+
         searchViewModel.getTweetsObservable().observe(this, Observer {
             it?.let {
                 if (it == null || it.isEmpty()) {

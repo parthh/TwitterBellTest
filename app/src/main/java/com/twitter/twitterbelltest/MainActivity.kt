@@ -3,6 +3,7 @@ package com.twitter.twitterbelltest
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -34,7 +35,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         nav_view.setupWithNavController(navController)
-
+        nav_view.setOnNavigationItemReselectedListener { menuItem ->
+            Toast.makeText(this,"Reselected",Toast.LENGTH_SHORT).show()
+        }
         startLocationRequest()
     }
 

@@ -2,10 +2,14 @@ package com.twitter.twitterbelltest.ui.tweet
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import com.twitter.sdk.android.core.models.Tweet
+import com.twitter.twitterbelltest.R
 import com.twitter.twitterbelltest.databinding.ActivityTweetLayoutBinding
 import com.twitter.twitterbelltest.model.TweetItem
 import com.twitter.twitterbelltest.ui.base.BaseTweetActivity
@@ -15,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_tweet_layout.*
 import kotlinx.android.synthetic.main.item_tweet_action.*
 import kotlinx.android.synthetic.main.video_cover.*
 import kotlinx.android.synthetic.main.view_userinfo.*
+import java.lang.Exception
 
 
 class TweetDetailActivity : BaseTweetActivity() {
@@ -77,6 +82,9 @@ class TweetDetailActivity : BaseTweetActivity() {
                 val pair = tweetItem.tweetVideoUrl
                 showVideo(pair.first, pair.second)
             }
+        }
+        tweetDetailCardView.setOnClickListener {
+            openTweet(tweetItem.tweetId, tweetItem.userScreenName)
         }
         activityBinding.executePendingBindings()
     }
