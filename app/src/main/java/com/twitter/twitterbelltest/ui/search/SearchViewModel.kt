@@ -84,7 +84,7 @@ class SearchViewModel : ViewModel() {
 
     private fun postUpdate(query: String, geocode: Geocode, tweetList: List<Tweet>?) {
         val tweetListItems = mutableListOf<TweetItem>()
-        (tweetList as List<Tweet>).let {
+        tweetList?.let {
             it.forEach { tweet: Tweet -> tweetListItems.add(tweet.getTweetItemFromTweet()) }
         }
         setCacheSearchTweet(query, geocode, tweetListItems)

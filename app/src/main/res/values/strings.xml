@@ -10,6 +10,7 @@
     <string name="authentication_failed">Authentication Failed</string>
     <string name="search_hint">Search tweets by hashtag or keyword</string>
     <string name="search_not_found">No Result Found</string>
+    <string name="no_location_permission">Location permission needed</string>
 
     <!-- RunTime App Permission Request resources -->
     <string name="permission_request_ok_text">OK</string>

@@ -1,8 +1,6 @@
 package com.twitter.twitterbelltest.ui.home
 
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +16,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import com.twitter.twitterbelltest.MainActivity
 import com.twitter.twitterbelltest.location.LocationProvider
 import com.twitter.twitterbelltest.location.LocationProviderImpl
-import com.twitter.twitterbelltest.location.model.LocationUpdateRequest
 import com.twitter.twitterbelltest.ui.home.adapter.MapPinAdapter
 import com.twitter.twitterbelltest.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -29,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
-    val locationProvider: LocationProvider = LocationProviderImpl()
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var googleMap: GoogleMap
     private var mapReady = false
@@ -63,21 +58,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mapFragment?.getMapAsync(this)
         radius.text = getString(com.twitter.twitterbelltest.R.string.textview_radius, getRadius())
         seekBar.progress = getRadius()*1000
-        // get location
-        startLocationUpdateRequest()
-    }
-
-    fun startLocationUpdateRequest() {
-        locationProvider.startLocationTracker(
-            context = activity as MainActivity,
-            config = LocationUpdateRequest(),
-            onLocationChange = {
-                Log.d(
-                    "Location",
-                    "New Location - found - lat: " + it.latitude + " lng:" + it.longitude
-                )
-                setLocation(location = it)
-            })
     }
 
     private fun showTweetsOnMap() {
@@ -122,7 +102,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 getZoomLevel(null)
             )
         )
-        googleMap.isMyLocationEnabled = true
+        if(isLocationGranted(activity!!))
+            googleMap.isMyLocationEnabled = true
 
         showTweetsOnMap()
 

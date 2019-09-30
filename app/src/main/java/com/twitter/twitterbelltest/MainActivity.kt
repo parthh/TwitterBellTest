@@ -8,12 +8,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.twitter.twitterbelltest.location.LocationProvider
 import com.twitter.twitterbelltest.location.LocationProviderImpl
-import com.twitter.twitterbelltest.location.model.LocationLastKnownRequest
+import com.twitter.twitterbelltest.location.model.LocationUpdateRequest
 import com.twitter.twitterbelltest.utils.setLocation
 import com.twitter.twitterbelltest.utils.setRadius
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,10 +22,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        startLocationRequest()
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -34,21 +33,21 @@ class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        nav_view.setupWithNavController(navController)
+
+        startLocationRequest()
     }
 
     fun startLocationRequest() {
-        locationProvider.getLastKnownPosition(context = this@MainActivity,
-            config = LocationLastKnownRequest(),
+        locationProvider.startLocationTracker(
+            context = this@MainActivity,
+            config = LocationUpdateRequest(),
             onLocationChange = {
                 Log.d(
                     "Location",
-                    "Last Location - found - lat: " + it.latitude + " lng:" + it.longitude
+                    "New Location - found - lat: " + it.latitude + " lng:" + it.longitude
                 )
                 setLocation(location = it)
-            },
-            onNoLocationFound = {
-                Log.d("Location", "Last Location - no location found")
             })
     }
 

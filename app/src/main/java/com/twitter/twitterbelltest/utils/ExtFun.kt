@@ -1,9 +1,13 @@
 package com.twitter.twitterbelltest.utils
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
 import android.text.format.DateUtils
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -197,3 +201,9 @@ fun Tweet.getTweetItemFromTweet(): TweetItem {
 
     return tweetItem
 }
+
+fun isLocationGranted(context: Context) =
+    ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED

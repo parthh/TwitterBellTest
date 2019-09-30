@@ -60,8 +60,10 @@ class LocationProviderImpl : LocationProvider {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
             onPermissionResult = { permissionResult ->
-                if (permissionResult.areAllGranted() && isGpsIsEnabled(context)) {
-                    getLastLocation(config.locationRequestSource)
+                if (permissionResult.areAllGranted()) {
+                    if(isGpsIsEnabled(context)) {
+                        getLastLocation(config.locationRequestSource)
+                    }
                 }
             },
             requestCode = REQUEST_PERMISSION_FINE_LOCATION_FOR_LAST_POSITION
@@ -106,7 +108,9 @@ class LocationProviderImpl : LocationProvider {
             ),
             onPermissionResult = { permissionResult ->
                 if (permissionResult.areAllGranted() && isGpsIsEnabled(context)) {
-                    requestLocationUpdates(config)
+//                    if(isGpsIsEnabled(context)) {
+                        requestLocationUpdates(config)
+//                    }
                 }
             },
             requestCode = REQUEST_PERMISSION_FINE_LOCATION_FOR_LOCATION_TRACKER
