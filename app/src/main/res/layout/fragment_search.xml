@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchTweets"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/MyActionBarWidgetTheme"
+        android:focusable="false"
+        android:focusedByDefault="false"
+        android:focusableInTouchMode="true"
+        android:background="@drawable/rounded_corners_transparent_background"
+        app:defaultQueryHint="@string/search_hint"
+        app:iconifiedByDefault="false"
+        app:closeIcon="@drawable/ic_close_black_24dp"
+        app:searchIcon="@drawable/ic_search_black_24dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tweetsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/searchTweets"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:scrollbars="vertical" />
 
     <TextView
-        android:id="@+id/text_dashboard"
+        android:id="@+id/noResultFound"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="@string/search_not_found"
+        style="@style/MediumTextViewGreyBold"
+        android:textAlignment="center" />
+
+</RelativeLayout>

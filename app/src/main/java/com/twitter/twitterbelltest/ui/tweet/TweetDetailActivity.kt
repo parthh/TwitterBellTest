@@ -33,7 +33,7 @@ class TweetDetailActivity : BaseTweetActivity() {
                 initUi(it)
             }
         })
-        val tweetId = intent.getLongExtra("tweetId", 0L)
+        val tweetId = intent.getLongExtra(TWEET_ID, 0L)
         if (tweetId != 0L) {
             tweetDetailViewModel.fetchTweetDetails(tweetId)
         }
@@ -72,7 +72,7 @@ class TweetDetailActivity : BaseTweetActivity() {
         }
 
         if (!tweetItem.tweetVideoCoverUrl.isNullOrEmpty()) {
-            tweetPhoto.loadUrl(tweetItem.tweetVideoCoverUrl)
+            tweetVideoImageView.loadUrl(tweetItem.tweetVideoCoverUrl)
             playVideoImageButton.setOnClickListener { view ->
                 val pair = tweetItem.tweetVideoUrl
                 showVideo(pair.first, pair.second)
@@ -93,5 +93,9 @@ class TweetDetailActivity : BaseTweetActivity() {
 
     override fun postInteractionSuccessful(tweetAfter: Tweet) {
         initUi(tweetAfter.getTweetItemFromTweet())
+    }
+
+    companion object {
+        const val TWEET_ID = "tweetId"
     }
 }

@@ -61,7 +61,7 @@ class HomeViewModel : ViewModel() {
         try {
             TwitterCore.getInstance().apiClient.searchService.tweets(
                 "#food", geocode, null,
-                null, null, 100, null, null, null, null
+                null, null, 100, null, null, null, true
             ).enqueue(object : Callback<Search> {
                 override fun onResponse(call: Call<Search>, response: Response<Search>) {
                     val tweets = response.body()?.tweets ?: Collections.emptyList()

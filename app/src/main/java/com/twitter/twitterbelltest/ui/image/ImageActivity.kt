@@ -10,7 +10,10 @@ class ImageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
-        var imageUrl  = intent.getStringExtra("imageUrl")
+        var imageUrl  = intent.getStringExtra(TAG_URL)
         fullImage.loadUrl(imageUrl)
+    }
+    companion object {
+        const val TAG_URL = "imageUrl"
     }
 }

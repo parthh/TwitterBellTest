@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.Marker
 import com.squareup.picasso.Picasso
 import com.twitter.twitterbelltest.R
 import com.twitter.twitterbelltest.ui.tweet.TweetDetailActivity
+import com.twitter.twitterbelltest.ui.tweet.TweetDetailActivity.Companion.TWEET_ID
 import com.twitter.twitterbelltest.utils.formatTime
 import com.twitter.twitterbelltest.utils.parseTweetPinSnippet
 
@@ -51,7 +52,7 @@ class MapPinAdapter(private val context: Context) : GoogleMap.InfoWindowAdapter,
 
     fun startTwitterDetailActivity(id: Long){
         val intent =  Intent(context, TweetDetailActivity::class.java)
-        intent.putExtra("tweetId",id)
+        intent.putExtra(TWEET_ID,id)
         context.startActivity(intent)
     }
 }

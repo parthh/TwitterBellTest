@@ -144,25 +144,37 @@ fun Tweet.hasMultipleMedia(): Boolean {
 }
 
 fun Tweet.getImageUrl(): String {
-    return if (hasSingleImage() || hasMultipleMedia())
-        entities.media[0]?.mediaUrl ?: ""
-    else
+    return try {
+        if (hasSingleImage() || hasMultipleMedia())
+            entities.media[0]?.mediaUrl ?: ""
+        else
+            ""
+    } catch (e: Exception) {
         ""
+    }
 }
 
 fun Tweet.getVideoCoverUrl(): String {
-    return if (hasSingleVideo() || hasMultipleMedia())
-        entities.media[0]?.mediaUrlHttps ?: (entities.media[0]?.mediaUrl ?: "")
-    else
+    return try {
+        if (hasSingleVideo() || hasMultipleMedia())
+            entities.media[0]?.mediaUrlHttps ?: (entities.media[0]?.mediaUrl ?: "")
+        else
+            ""
+    } catch (e: Exception) {
         ""
+    }
 }
 
 fun Tweet.getVideoUrlType(): Pair<String, String> {
-    return if (hasSingleVideo() || hasMultipleMedia()) {
-        val variant = extendedEntities.media[0].videoInfo.variants
-        Pair(variant[0].url, variant[0].contentType)
-    } else
+    return try {
+        if (hasSingleVideo() || hasMultipleMedia()) {
+            val variant = extendedEntities.media[0].videoInfo.variants
+            Pair(variant[0].url, variant[0].contentType)
+        } else
+            Pair("", "")
+    } catch (e: Exception) {
         Pair("", "")
+    }
 }
 
 fun Tweet.getTweetItemFromTweet(): TweetItem {

@@ -66,7 +66,9 @@
         <activity
             android:name=".ui.image.ImageActivity"
             android:label="@string/title_image"/>
-
+        <activity
+            android:name=".ui.video.VideoActivity"
+            android:label="@string/title_image"/>
     </application>
 
 </manifest>

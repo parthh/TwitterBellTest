@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@color/cardview_light_background"
+        android:elevation="@dimen/s1"
         card_view:cardCornerRadius="0dp">
 
         <LinearLayout
@@ -61,7 +62,14 @@
                 layout="@layout/item_tweet_action"
                 bind:tweetItemAction="@{tweet}" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/photoBlackTrasparent"/>
+
         </LinearLayout>
+
+
 
     </androidx.cardview.widget.CardView>
 </layout>
