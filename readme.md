@@ -2,6 +2,9 @@
 
 Welcome to **Bell's Twitter API coding Test** codebase.
 
+# DEMO
+![](demo.gif)
+
 # Required Task tackle under this code base
 
 ## A) a data visualizer for Twitter, based on the location of the most recent tweets that have geolocation information. In particular, you will use the Twitter framework to get the most recent tweets within a 5 km (distance can be customizable) radius of the user’s current location and display it on a map.
@@ -10,6 +13,7 @@ If the user taps on one of the pins, a small view should display some informatio
 
 ## B) The application should be able to display tweets search results based on keywords and hashtags. The listed tweets containing images and videos should be viewable and playable respectively.
 
+## Bonus: While on the map, the app can continuously poll for new tweets, and display them on the map when they are received.  
 
 # Twitter API SDK reference (https://github.com/twitter-archive/twitter-kit-android)
 # Twitter Developer Account if you want to create your own test consumer API key and secret under your own account ( https://developer.twitter.com/en/account/get-started )
