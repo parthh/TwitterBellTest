@@ -14,23 +14,14 @@ import com.twitter.twitterbelltest.TwitterTestApp
 import com.twitter.twitterbelltest.utils.Const.CACHE_TWEETS
 import com.twitter.twitterbelltest.utils.getLocation
 import com.twitter.twitterbelltest.utils.getRadius
+import com.twitter.twitterbelltest.utils.startCoroutineTimer
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.TimeUnit
 
 class HomeViewModel : ViewModel() {
-
-    private val timeToRefreshMap: Long = 30 // 30 sec
-
-    // Executor service to fetch the tweets after each 30 seconds
-    private val scheduledExecutorService: ScheduledExecutorService =
-        Executors.newScheduledThreadPool(1)
-
     private val tweets: MutableLiveData<MutableList<Tweet>> = MutableLiveData()
 
     fun getTweetsObservable(): LiveData<MutableList<Tweet>> = tweets
@@ -45,15 +36,14 @@ class HomeViewModel : ViewModel() {
             tweetList =
                 TwitterTestApp.lruCacheWrapper.get(CACHE_TWEETS(radius)).await()
         }
-        if (tweetList != null) {
+        tweetList?.let {
             postUpdate(radius, tweetList = tweetList as List<Tweet>)
             Log.d("tweet", "cached tweet returned")
-        } else {
-            scheduledExecutorService.scheduleWithFixedDelay({
-                loadTweets(location, radius)
-            }, 0, timeToRefreshMap, TimeUnit.SECONDS)
-        }
+        } ?: startCoroutineTimer(timeToInitialMap, timeToRefreshMap, action = {
+            loadTweets(location, radius)
+        })
     }
+
 
     @WorkerThread
     private fun loadTweets(location: Location, radius: Int) {
@@ -103,5 +93,10 @@ class HomeViewModel : ViewModel() {
             TwitterTestApp.lruCacheWrapper.remove(CACHE_TWEETS(radius)).await()
             TwitterTestApp.lruCacheWrapper.set(CACHE_TWEETS(radius), tweetList as Any).await()
         }
+    }
+
+    companion object {
+        private const val timeToRefreshMap: Long = 30000L // 30 sec
+        private const val timeToInitialMap: Long = 0L
     }
 }

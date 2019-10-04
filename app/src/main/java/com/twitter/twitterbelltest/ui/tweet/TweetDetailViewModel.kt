@@ -17,10 +17,11 @@ class TweetDetailViewModel : ViewModel() {
 
     fun fetchTweetDetails(tweetId: Long) {
         try {
-            TwitterCore.getInstance().apiClient.statusesService.show(tweetId, null, null, null
+            TwitterCore.getInstance().apiClient.statusesService.show(
+                tweetId, null, null, null
             ).enqueue(object : Callback<Tweet> {
                 override fun onResponse(call: Call<Tweet>?, response: Response<Tweet>?) {
-                    if(response?.isSuccessful == true){
+                    if (response?.isSuccessful == true) {
                         postData(response.body()?.getTweetItemFromTweet())
                     }
                 }
@@ -30,11 +31,11 @@ class TweetDetailViewModel : ViewModel() {
                 }
             })
         } catch (e: Exception) {
-
+            postData(null)
         }
     }
 
-    fun postData(tweet:TweetItem?){
+    fun postData(tweet: TweetItem?) {
         this.tweet.value = tweet
     }
 }

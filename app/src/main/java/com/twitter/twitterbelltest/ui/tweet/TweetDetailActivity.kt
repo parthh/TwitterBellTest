@@ -25,14 +25,17 @@ class TweetDetailActivity : BaseTweetActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityBinding = DataBindingUtil.setContentView(this, com.twitter.twitterbelltest.R.layout.activity_tweet_layout)
+        activityBinding = DataBindingUtil.setContentView(
+            this,
+            com.twitter.twitterbelltest.R.layout.activity_tweet_layout
+        )
         tweetDetailViewModel =
             ViewModelProviders.of(this).get(TweetDetailViewModel::class.java)
 
         tweetDetailViewModel.getTweet().observe(this, Observer {
             it?.let {
                 initUi(it)
-            }
+            } ?: onBackPressed()
         })
         val tweetId = intent.getLongExtra(TWEET_ID, 0L)
         if (tweetId != 0L) {
@@ -67,12 +70,12 @@ class TweetDetailActivity : BaseTweetActivity() {
                 retweet(tweetItem.tweetId)
         }
 
-        if (!tweetItem.tweetPhoto.isNullOrEmpty()) {
+        if (tweetItem.tweetPhoto.isNotEmpty()) {
             tweetPhoto.loadUrl(tweetItem.tweetPhoto)
             tweetPhoto.setOnClickListener { showImage(tweetItem.tweetPhoto) }
         }
 
-        if (!tweetItem.tweetVideoCoverUrl.isNullOrEmpty()) {
+        if (tweetItem.tweetVideoCoverUrl.isNotEmpty()) {
             tweetVideoImageView.loadUrl(tweetItem.tweetVideoCoverUrl)
             playVideoImageButton.setOnClickListener { view ->
                 val pair = tweetItem.tweetVideoUrl

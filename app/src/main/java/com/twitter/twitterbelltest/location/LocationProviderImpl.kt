@@ -33,7 +33,7 @@ class LocationProviderImpl : LocationProvider {
     private var onNoLocationFound: (() -> Unit)? = null
     private var onLocationChange: ((Location) -> Unit)? = null
     private val permissionProvider: PermissionProvider = PermissionProviderImpl
-    private var context: Context?=null
+    private var context: Context? = null
     /**
      * get last known location
      *
@@ -45,7 +45,7 @@ class LocationProviderImpl : LocationProvider {
         onLocationChange: ((Location) -> Unit)?,
         onNoLocationFound: (() -> Unit)?
     ) {
-        this.context =  context
+        this.context = context
         if (locationManager == null) {
             locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         }
@@ -61,7 +61,7 @@ class LocationProviderImpl : LocationProvider {
             ),
             onPermissionResult = { permissionResult ->
                 if (permissionResult.areAllGranted()) {
-                    if(isGpsIsEnabled(context)) {
+                    if (isGpsIsEnabled(context)) {
                         getLastLocation(config.locationRequestSource)
                     }
                 }
@@ -93,7 +93,7 @@ class LocationProviderImpl : LocationProvider {
         config: LocationUpdateRequest,
         onLocationChange: (Location) -> Unit
     ) {
-        this.context =  context
+        this.context = context
         this.onLocationChange = onLocationChange
 
         if (locationManager == null) {
@@ -108,9 +108,7 @@ class LocationProviderImpl : LocationProvider {
             ),
             onPermissionResult = { permissionResult ->
                 if (permissionResult.areAllGranted() && isGpsIsEnabled(context)) {
-//                    if(isGpsIsEnabled(context)) {
-                        requestLocationUpdates(config)
-//                    }
+                    requestLocationUpdates(config)
                 }
             },
             requestCode = REQUEST_PERMISSION_FINE_LOCATION_FOR_LOCATION_TRACKER
@@ -132,7 +130,7 @@ class LocationProviderImpl : LocationProvider {
         }
 
         override fun onProviderDisabled(p0: String?) {
-            isGpsIsEnabled(context!!)
+            context?.let { isGpsIsEnabled(it) }
         }
     }
 

@@ -38,7 +38,7 @@ class SearchFragment : BaseTweetFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val layoutManager = LinearLayoutManager(activity!!)
+        val layoutManager = LinearLayoutManager(activity)
         tweetsRecyclerView.layoutManager = layoutManager
         adapter = SearchAdapter( this) {
             startTwitterDetailActivity(it.tweetId)
@@ -68,7 +68,7 @@ class SearchFragment : BaseTweetFragment() {
 
         searchViewModel.getTweetsObservable().observe(this, Observer {
             it?.let {
-                if (it == null || it.isEmpty()) {
+                if (it.isEmpty()) {
                     noResultFound.visibility = View.VISIBLE
                 } else {
                     noResultFound.visibility = View.GONE

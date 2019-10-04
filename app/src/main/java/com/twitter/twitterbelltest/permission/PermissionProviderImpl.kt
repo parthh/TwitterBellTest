@@ -34,14 +34,14 @@ object PermissionProviderImpl : PermissionProvider {
             if (grantResults.isNotEmpty()) {
                 val result = mutableMapOf<String, Int>()
                 permissions.forEachIndexed { index, permission ->
-                    result.put(permission, grantResults[index])
+                    result[permission] = grantResults[index]
                 }
                 onPermissionResult?.invoke(PermissionResult(result, requestCode))
 
             } else {
                 val result = mutableMapOf<String, Int>()
                 permissions.forEachIndexed { index, permission ->
-                    result.put(permission, grantResults[index])
+                    result[permission] = grantResults[index]
                 }
                 onPermissionResult?.invoke(PermissionResult(result, requestCode))
             }
@@ -126,7 +126,7 @@ object PermissionProviderImpl : PermissionProvider {
                 // all permissions has already been granted
                 val result = mutableMapOf<String, Int>()
                 permissions.forEachIndexed { _, permission ->
-                    result.put(permission, PackageManager.PERMISSION_GRANTED)
+                    result[permission] = PackageManager.PERMISSION_GRANTED
                 }
                 onPermissionResult?.invoke(PermissionResult(result, usedRequestCode))
                 return true
@@ -137,7 +137,7 @@ object PermissionProviderImpl : PermissionProvider {
             // the sdk is lower then API 23 so no permission handling needs to be used
             val result = mutableMapOf<String, Int>()
             permissions.forEach { permission ->
-                result.put(permission, PackageManager.PERMISSION_GRANTED)
+                result[permission] = PackageManager.PERMISSION_GRANTED
             }
             onPermissionResult?.invoke(PermissionResult(result, usedRequestCode))
             return true

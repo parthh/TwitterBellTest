@@ -22,6 +22,9 @@ import com.twitter.twitterbelltest.utils.Const.DEFAULT_LNG
 import com.twitter.twitterbelltest.utils.Const.DEFAULT_RADIUS
 import com.twitter.twitterbelltest.utils.Const.PREF_LATLNG_KEY
 import com.twitter.twitterbelltest.utils.Const.PREF_RADIUS_KEY
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -283,3 +286,23 @@ fun isLocationGranted(context: Context) =
         context,
         Manifest.permission.ACCESS_FINE_LOCATION
     ) == PackageManager.PERMISSION_GRANTED
+
+
+/**
+ * Start recurring task after required milliseconds
+ * @param delayMillis start time of task execution
+ * @param repeatMillis repetation after first task finished
+ * @param action required action when task is ready to execute
+ */
+fun startCoroutineTimer(delayMillis: Long = 0, repeatMillis: Long = 0, action: () -> Unit) =
+    GlobalScope.launch {
+        delay(delayMillis)
+        if (repeatMillis > 0) {
+            while (true) {
+                action()
+                delay(repeatMillis)
+            }
+        } else {
+            action()
+        }
+    }

@@ -19,7 +19,7 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
     /**
      * Called after success any of these operation favorite, retweet, destroy(retweet, favorite)
      */
-    abstract fun postInteractionSuccessful( tweetAfter: Tweet)
+    abstract fun postInteractionSuccessful(tweetAfter: Tweet)
 
     private fun enqueue(call: Call<Tweet>) {
         call.enqueue(object : Callback<Tweet>() {
@@ -31,10 +31,12 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
             }
 
             override fun failure(exception: TwitterException?) {
-                Snackbar.make(
-                    activity?.window?.decorView!!,
-                    "Action failed, we don't know why", Snackbar.LENGTH_SHORT
-                ).show()
+                activity?.let {
+                    Snackbar.make(
+                        it.window.decorView,
+                        "Action failed, we don't know why", Snackbar.LENGTH_SHORT
+                    ).show()
+                }
             }
 
         })
@@ -42,7 +44,7 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
 
     override fun favorite(tweetId: Long) {
         if (TwitterCore.getInstance().sessionManager.activeSession == null)
-            startActivity(Intent(activity!!, LoginActivity::class.java))
+            startActivity(Intent(activity, LoginActivity::class.java))
         else {
             val call = TwitterCore.getInstance().apiClient.favoriteService.create(tweetId, null)
             enqueue(call)
@@ -51,7 +53,7 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
 
     override fun retweet(tweetId: Long) {
         if (TwitterCore.getInstance().sessionManager.activeSession == null)
-            startActivity(Intent(activity!!, LoginActivity::class.java))
+            startActivity(Intent(activity, LoginActivity::class.java))
         else {
             val call = TwitterCore.getInstance().apiClient.statusesService.retweet(tweetId, null)
             enqueue(call)
@@ -61,7 +63,7 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
 
     override fun unfavorite(tweetId: Long) {
         if (TwitterCore.getInstance().sessionManager.activeSession == null)
-            startActivity(Intent(activity!!, LoginActivity::class.java))
+            startActivity(Intent(activity, LoginActivity::class.java))
         else {
             val call = TwitterCore.getInstance().apiClient.favoriteService.destroy(tweetId, null)
             enqueue(call)
@@ -70,7 +72,7 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
 
     override fun unretweet(tweetId: Long) {
         if (TwitterCore.getInstance().sessionManager.activeSession == null)
-            startActivity(Intent(activity!!, LoginActivity::class.java))
+            startActivity(Intent(activity, LoginActivity::class.java))
         else {
             val call = TwitterCore.getInstance().apiClient.statusesService.unretweet(tweetId, null)
             enqueue(call)
@@ -78,7 +80,7 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
     }
 
     override fun openTweet(tweetId: Long, screenName: String) {
-        Toast.makeText(activity!!, "open tweet", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, "open tweet", Toast.LENGTH_SHORT).show()
         startActivity(
             Intent.createChooser(
                 Intent(
@@ -90,13 +92,13 @@ abstract class BaseTweetFragment : Fragment(), TwitterActionListener {
     }
 
     override fun showImage(imageUrl: String) {
-        val intent =  Intent(activity!!, ImageActivity::class.java)
+        val intent = Intent(activity, ImageActivity::class.java)
         intent.putExtra(ImageActivity.TAG_URL, imageUrl)
         startActivity(intent)
     }
 
     override fun showVideo(videoUrl: String, videoType: String) {
-        val intent =  Intent(activity!!, VideoActivity::class.java)
+        val intent = Intent(activity, VideoActivity::class.java)
         intent.putExtra(VideoActivity.TAG_URL, videoUrl)
         intent.putExtra(VideoActivity.TAG_TYPE, videoType)
         startActivity(intent)

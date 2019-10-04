@@ -1,6 +1,7 @@
 package com.twitter.twitterbelltest.ui.search
 
 import android.location.Location
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,13 +23,12 @@ import retrofit2.Response
 import java.util.*
 
 class SearchViewModel : ViewModel() {
-
     private val tweets: MutableLiveData<List<TweetItem>?> = MutableLiveData()
 
     fun getTweetsObservable(): LiveData<List<TweetItem>?> = tweets
 
     fun initialized(
-        query: String = "#food",
+        query: String = defaultSearchTag,
         location: Location = getLocation(),
         radius: Int = getRadius()
     ) {
@@ -48,11 +48,10 @@ class SearchViewModel : ViewModel() {
                 TwitterTestApp.lruCacheWrapper.get(CACHE_SEARCH_RESULT(query, geocode))
                     .await()
         }
-        if (tweetList != null) {
+        tweetList?.let {
             postUpdate(query, geocode, tweetList as List<Tweet>)
-        } else {
-            loadTweets(query, geocode)
-        }
+            Log.d("tweet", "cached search tweet returned")
+        } ?: loadTweets(query, geocode)
     }
 
     @WorkerThread
@@ -106,5 +105,9 @@ class SearchViewModel : ViewModel() {
                 tweetList as Any
             ).await()
         }
+    }
+
+    companion object {
+        private const val defaultSearchTag = "#food"
     }
 }

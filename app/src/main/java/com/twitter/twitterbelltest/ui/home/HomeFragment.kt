@@ -55,28 +55,30 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             ?.replace(com.twitter.twitterbelltest.R.id.map, mapFragment)?.commit()
         mapFragment?.getMapAsync(this)
         radius.text = getString(com.twitter.twitterbelltest.R.string.textview_radius, getRadius())
-        seekBar.progress = getRadius()*1000 // initial seekbar set to 5KM
+        seekBar.progress = getRadius() * 1000 // initial seekbar set to 5KM
     }
 
     private fun showTweetsOnMap() {
         if (homeViewModel.getTweetsObservable().value.isNullOrEmpty() || !mapReady) {
             return
         }
-        val queue = homeViewModel.getTweetsObservable().value!!
+        val queue = homeViewModel.getTweetsObservable().value
         // remove all old markers
         googleMap.clear()
         addCircle()
 
-        queue
-            .map { Pair(it, it.getTweetLatLng()) }
-            .filter { it.second != null }  // if we have a non null latlng add marker
-            .forEach {
+        queue?.map { Pair(it, it.getTweetLatLng()) }
+            ?.filter { it.second != null }  // if we have a non null latlng add marker
+            ?.forEach {
                 val text = it.first.getStringTweetItemModel()
                 googleMap.addMarker(
-                    MarkerOptions()
-                        .position(it.second!!)
-                        .title(it.first.user.name)
-                        .snippet(text)
+                    it.second?.let { latlng ->
+                        MarkerOptions()
+                            .position(latlng)
+                            .title(it.first.user.name)
+                            .snippet(text)
+                    }
+
                 )
             }
 
@@ -91,17 +93,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val currentLocation = getLocation().getLatLng()
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
 
-        val adapter = MapPinAdapter(activity!!)
-        googleMap.setInfoWindowAdapter(adapter)
-        googleMap.setOnInfoWindowClickListener(adapter)
-        googleMap.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(
-                currentLocation,
-                getZoomLevel(null)
+        activity?.let {
+            val adapter = MapPinAdapter(it)
+            googleMap.setInfoWindowAdapter(adapter)
+            googleMap.setOnInfoWindowClickListener(adapter)
+            googleMap.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    currentLocation,
+                    getZoomLevel(null)
+                )
             )
-        )
-        if(isLocationGranted(activity!!))
-            googleMap.isMyLocationEnabled = true
+            if (isLocationGranted(it))
+                googleMap.isMyLocationEnabled = true
+        }
 
         showTweetsOnMap()
 
