@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="tweetMedia"
+            type="com.twitter.twitterbelltest.model.TweetItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/s1"
+        android:paddingLeft="@dimen/s2"
+        android:paddingRight="@dimen/s2">
+
+        <include
+            android:id="@+id/tweetFrameLayout"
+            layout="@layout/video_cover"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:visibility="@{TextUtils.isEmpty(tweetMedia.tweetVideoCoverUrl)? View.GONE :View.VISIBLE}" />
+
+        <ImageView
+            android:id="@+id/tweetPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:visibility="@{TextUtils.isEmpty(tweetMedia.tweetPhoto)?View.GONE :View.VISIBLE}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

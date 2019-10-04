@@ -9,7 +9,7 @@ import com.twitter.twitterbelltest.databinding.ListitemSearchBinding
 import com.twitter.twitterbelltest.model.TweetItem
 import com.twitter.twitterbelltest.ui.base.TwitterActionListener
 import com.twitter.twitterbelltest.utils.loadUrl
-import kotlinx.android.synthetic.main.item_tweet_action.view.*
+import kotlinx.android.synthetic.main.view_tweet_action.view.*
 import kotlinx.android.synthetic.main.view_userinfo.view.*
 
 /**

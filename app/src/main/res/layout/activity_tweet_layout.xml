@@ -38,66 +38,37 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tweetItem="@{tweet}" />
 
-            <TextView
-                android:id="@+id/statusTextView"
-                style="@style/MediumTextViewGreyBold"
-                android:layout_width="match_parent"
+            <include
+                android:id="@+id/statusRetweetLayout"
+                layout="@layout/view_status_retweet_text"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/s1"
-                android:text="@{tweet.tweetText}"
-                app:layout_constraintBottom_toTopOf="@+id/retweetTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userInfoLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/userInfoLayout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/mediaLayout"
+                app:tweetDetails="@{tweet}" />
 
-            <FrameLayout
-                android:id="@+id/frameLayout2"
-                android:layout_width="match_parent"
+            <include
+                android:id="@+id/mediaLayout"
+                layout="@layout/view_media"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/s1"
                 app:layout_constraintBottom_toTopOf="@+id/tweetActionLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/retweetTextView">
-
-                <include
-                    android:id="@+id/tweetFrameLayout"
-                    layout="@layout/video_cover"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:visibility="@{TextUtils.isEmpty(tweet.tweetVideoCoverUrl)? View.GONE :View.VISIBLE}" />
-
-                <ImageView
-                    android:id="@+id/tweetPhoto"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:visibility="@{TextUtils.isEmpty(tweet.tweetPhoto)?View.GONE :View.VISIBLE}" />
-
-            </FrameLayout>
-
-
-            <TextView
-                android:id="@+id/retweetTextView"
-                style="@style/MediumTextViewGreyNormal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/s1"
-                android:text="@{`Retweeted by @` +tweet.tweetText}"
-                android:visibility="@{tweet.tweetRetweeted ==true?View.VISIBLE:View.GONE}"
-                app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/statusRetweetLayout"
+                app:tweetMedia="@{tweet}" />
 
             <include
                 android:id="@+id/tweetActionLayout"
-                layout="@layout/item_tweet_action"
+                layout="@layout/view_tweet_action"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/s1"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+                app:layout_constraintTop_toBottomOf="@+id/mediaLayout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

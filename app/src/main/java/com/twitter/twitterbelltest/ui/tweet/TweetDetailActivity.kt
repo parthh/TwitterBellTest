@@ -12,8 +12,9 @@ import com.twitter.twitterbelltest.ui.base.BaseTweetActivity
 import com.twitter.twitterbelltest.utils.getTweetItemFromTweet
 import com.twitter.twitterbelltest.utils.loadUrl
 import kotlinx.android.synthetic.main.activity_tweet_layout.*
-import kotlinx.android.synthetic.main.item_tweet_action.*
 import kotlinx.android.synthetic.main.video_cover.*
+import kotlinx.android.synthetic.main.view_media.*
+import kotlinx.android.synthetic.main.view_tweet_action.*
 import kotlinx.android.synthetic.main.view_userinfo.*
 
 

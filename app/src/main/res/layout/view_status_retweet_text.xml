@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="tweetDetails"
+            type="com.twitter.twitterbelltest.model.TweetItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/s1"
+        android:paddingLeft="@dimen/s2"
+        android:paddingRight="@dimen/s2">
+
+        <TextView
+            android:id="@+id/statusTextView"
+            style="@style/MediumTextViewGreyBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{tweetDetails.tweetText}"
+            app:layout_constraintBottom_toTopOf="@+id/retweetTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/retweetTextView"
+            style="@style/MediumTextViewGreyNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/s1"
+            android:text="@{`Retweeted by @` +tweetDetails.tweetText}"
+            android:visibility="@{tweetDetails.tweetRetweeted ==true?View.VISIBLE:View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
