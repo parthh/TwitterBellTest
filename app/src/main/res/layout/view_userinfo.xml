@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -13,7 +14,7 @@
             type="com.twitter.twitterbelltest.model.TweetItem" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/s2"
@@ -23,29 +24,41 @@
             android:id="@+id/userProfilePicImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/userNameTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/userNameTextView"
+            style="@style/MediumTextViewGreyBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{TextUtils.isEmpty(tweetItem.userName)? View.GONE : View.VISIBLE}"
-            android:text="@{tweetItem.userName}"
-            style="@style/MediumTextViewGreyBold"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/s1"
-            android:layout_marginEnd="@dimen/s1"
+            android:layout_marginStart="@dimen/s2"
+            android:text="@{tweetItem.userName}"
+            android:visibility="@{TextUtils.isEmpty(tweetItem.userName)? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/userScreenNameTextView"
+            app:layout_constraintStart_toEndOf="@+id/userProfilePicImageView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Donald Trump" />
 
         <TextView
             android:id="@+id/userScreenNameTextView"
+            style="@style/MediumTextViewGreyNormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:visibility="@{TextUtils.isEmpty(tweetItem.userScreenName)? View.GONE : View.VISIBLE}"
+            android:layout_marginStart="12dp"
             android:text="@{`/@`+tweetItem.userScreenName}"
-            style="@style/MediumTextViewGreyNormal"
+            android:visibility="@{TextUtils.isEmpty(tweetItem.userScreenName)? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/userNameTextView"
+            app:layout_constraintStart_toEndOf="@+id/userNameTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             tools:text="/@test" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

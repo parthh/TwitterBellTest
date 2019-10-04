@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -12,57 +13,79 @@
             name="tweetItemAction"
             type="com.twitter.twitterbelltest.model.TweetItem" />
     </data>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
 
-    <ImageButton
-        android:id="@+id/favouriteImageButton"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_margin="3dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_favorite_border_green_a700_24dp" />
-
-    <TextView
-        android:id="@+id/favouritesStatsTextView"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{``+tweetItemAction.tweetFavoriteCount}"
-        style="@style/SmallTextViewGreyBold"
-        android:layout_gravity="center_vertical"
-        tools:text="200" />
+        android:layout_marginTop="@dimen/s1"
+        android:paddingLeft="@dimen/s2"
+        android:paddingRight="@dimen/s2">
 
-    <ImageButton
-        android:id="@+id/retweetImageButton"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_margin="3dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_compare_arrows_green_a700_24dp" />
+        <ImageButton
+            android:id="@+id/favouriteImageButton"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/s1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_favorite_border_green_a700_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/favouritesStatsTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/retweetsStatsTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@{``+tweetItemAction.reTweetCount}"
-        style="@style/SmallTextViewGreyBold"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        tools:text="22" />
+        <TextView
+            android:id="@+id/favouritesStatsTextView"
+            style="@style/SmallTextViewGreyBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@{``+tweetItemAction.tweetFavoriteCount}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/retweetImageButton"
+            app:layout_constraintStart_toEndOf="@+id/favouriteImageButton"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="200" />
 
-    <TextView
-        android:id="@+id/timeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="@{tweetItemAction.formattedTime}"
-        style="@style/SmallTextViewGreyBold"
-        android:ellipsize="end"
-        tools:text="12:00PM"
-        android:maxLines="1" />
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/retweetImageButton"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/s3"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_compare_arrows_green_a700_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/favouritesStatsTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/retweetsStatsTextView"
+            style="@style/SmallTextViewGreyBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/s1"
+            android:layout_weight="1"
+            android:text="@{``+tweetItemAction.reTweetCount}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/retweetImageButton"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="22" />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            style="@style/SmallTextViewGreyBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{tweetItemAction.formattedTime}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12:00PM" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -21,69 +21,89 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardBackgroundColor="@color/cardview_light_background"
+        card_view:cardUseCompatPadding="true"
         card_view:cardCornerRadius="0dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/s2"
-            android:paddingTop="@dimen/s2">
+            android:paddingTop="@dimen/s2"
+            android:paddingBottom="@dimen/s2">
 
             <include
                 android:id="@+id/userInfoLayout"
                 layout="@layout/view_userinfo"
-                bind:tweetItem="@{tweet}" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tweetItem="@{tweet}" />
 
             <TextView
                 android:id="@+id/statusTextView"
+                style="@style/MediumTextViewGreyBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/MediumTextViewGreyBold"
-                android:layout_marginBottom="@dimen/s1"
-                android:layout_marginLeft="@dimen/s2"
-                android:layout_marginRight="@dimen/s2"
                 android:layout_marginTop="@dimen/s1"
-                android:text="@{tweet.tweetText}" />
+                android:text="@{tweet.tweetText}"
+                app:layout_constraintBottom_toTopOf="@+id/retweetTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userInfoLayout" />
 
             <FrameLayout
+                android:id="@+id/frameLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/s1"
+                app:layout_constraintBottom_toTopOf="@+id/tweetActionLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/retweetTextView">
 
                 <include
                     android:id="@+id/tweetFrameLayout"
                     layout="@layout/video_cover"
-                    android:visibility="@{TextUtils.isEmpty(tweet.tweetVideoCoverUrl)? View.GONE :View.VISIBLE}"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:visibility="@{TextUtils.isEmpty(tweet.tweetVideoCoverUrl)? View.GONE :View.VISIBLE}" />
 
                 <ImageView
                     android:id="@+id/tweetPhoto"
-                    android:visibility="@{TextUtils.isEmpty(tweet.tweetPhoto)?View.GONE :View.VISIBLE}"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:visibility="@{TextUtils.isEmpty(tweet.tweetPhoto)?View.GONE :View.VISIBLE}" />
 
             </FrameLayout>
 
 
             <TextView
                 android:id="@+id/retweetTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/MediumTextViewGreyNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/s1"
                 android:text="@{`Retweeted by @` +tweet.tweetText}"
                 android:visibility="@{tweet.tweetRetweeted ==true?View.VISIBLE:View.GONE}"
-                android:layout_marginLeft="@dimen/s2"
-                android:layout_marginRight="@dimen/s2" />
+                app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
 
             <include
                 android:id="@+id/tweetActionLayout"
                 layout="@layout/item_tweet_action"
-                bind:tweetItemAction="@{tweet}" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/s1"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:tweetItemAction="@{tweet}" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 </layout>

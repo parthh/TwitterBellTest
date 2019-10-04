@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,39 +11,49 @@
         android:id="@+id/searchTweets"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:theme="@style/MyActionBarWidgetTheme"
-        android:focusable="false"
-        android:focusedByDefault="false"
-        android:focusableInTouchMode="true"
         android:background="@drawable/rounded_corners_transparent_background"
+        android:focusable="false"
+        android:focusableInTouchMode="true"
+        android:focusedByDefault="false"
+        android:theme="@style/MyActionBarWidgetTheme"
+        app:closeIcon="@drawable/ic_close_black_24dp"
         app:defaultQueryHint="@string/search_hint"
         app:iconifiedByDefault="false"
-        app:closeIcon="@drawable/ic_close_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/searchResultLayout"
         app:searchIcon="@drawable/ic_search_black_24dp" />
 
     <FrameLayout
+        android:id="@+id/searchResultLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/searchTweets">
+        android:layout_height="0dp"
+        android:layout_below="@+id/searchTweets"
+        app:layout_constraintTop_toBottomOf="@+id/searchTweets"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tweetsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <TextView
             android:id="@+id/noResultFound"
-            android:visibility="gone"
+            style="@style/MediumTextViewGreyBold"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:gravity="center"
             android:text="@string/search_not_found"
-            style="@style/MediumTextViewGreyBold"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:visibility="gone" />
 
     </FrameLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
